@@ -41,7 +41,8 @@ lit: SIGNED_INT  -> int
 
 type: IDENT "<" type ">"                                      -> paramtype
     | IDENT                                                   -> primtype
-    | IDENT "<" (type ("," type)*)? ">" "," "<" (type?) ">"   -> fntype
+    | IDENT "<" (type ("," type)*)? ">" "," "<" (rtype) ">"   -> fntype
+rtype: type?
 
 BOOL: "true" | "false"
 IDENT: ("_"|"%"|LETTER) ("_"|"%"|"."|LETTER|DIGIT)*
@@ -179,12 +180,16 @@ class JSONTransformer(lark.Transformer):
         return str(items[0])
 
     def fntype(self, items):
+        print(items)
         out = {}
         if items[1:-1]:
             out['params'] = items[1:-1]
         if items[-1]:
             out['ret'] = items[-1]
         return out
+
+    def rtype(self, items):
+        return items
 
     def float(self, items):
         return float(items[0])
