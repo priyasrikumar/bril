@@ -180,7 +180,6 @@ class JSONTransformer(lark.Transformer):
         return str(items[0])
 
     def fntype(self, items):
-        print(items)
         out = {}
         if items[1:-1]:
             out['params'] = items[1:-1]
